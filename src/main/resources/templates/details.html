@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kontaktliste</title>
+    <link crossorigin="anonymous"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          rel="stylesheet">
+    <link th:href="@{/css/tracker.css}"
+          href="../static/css/tracker.css"
+          rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 th:object="${liste.index}"
+        th:text="|*{vorname} *{nachname}| ">Otto Müller</h1>
+
+    <h2>Kontaktpersonen</h2>
+    <ul th:remove="all-but-first">
+        <li th:each="kontakt : ${liste.kontakte}">
+            <span th:text="|${kontakt.vorname} ${kontakt.nachname}, ${kontakt.kontaktinformationen}|"></span>
+            <form method="post" th:action="@{/remove/from/{id}(id = ${liste.id})}" style="display:inline!important;">
+                <input type="hidden" name="vorname" th:value="${kontakt.vorname}">
+                <input type="hidden" name="nachname" th:value="${kontakt.nachname}">
+                <input type="hidden" name="kontaktinformationen" th:value="${kontakt.kontaktinformationen}">
+                <button class="delete" type="submit">Löschen</button> </form>
+        </li>
+        <li>Ursula Fuhrmann</li>
+        <li>Markus Schäfer</li>
+        <li>Klaudia Wirtz</li>
+    </ul>
+
+
+    <form method="post">
+        <input type="text" name="vorname" placeholder="Vorname">
+        <input type="text" name="nachname" placeholder="Nachname">
+        <input type="text" name="kontaktinformationen" placeholder="Kontaktinformationen">
+        <button type="submit">Hinzufügen</button>
+    </form>
+
+    <a href="/">Zurück zur Übersicht</a>
+
+    <hr>
+    <p>Letzte Änderung am <span th:text="${liste.changed}">4.12.2020</span></p>
+
+</div>
+</body>
+</html>

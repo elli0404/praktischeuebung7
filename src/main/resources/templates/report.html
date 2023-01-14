@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Report</title>
+    <link crossorigin="anonymous"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          rel="stylesheet">
+    <link th:href="@{/css/tracker.css}"
+          href="../static/css/tracker.css"
+          rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>Kontaktlisten Report</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Alter (Tage)</th>
+            <th>Anzahl von Listen</th>
+        </tr>
+        </thead>
+        <tbody th:remove="all-but-first">
+        <tr th:each="entry : ${alter}">
+            <td th:text="${entry.getKey()}">12</td>
+            <td th:text="${entry.getValue()}">3</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <a href="/">Zurück zur Übersicht</a>
+
+
+</div>
+</body>
+</html>

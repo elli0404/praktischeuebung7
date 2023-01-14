@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kontaktlisten</title>
+    <link crossorigin="anonymous"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>Kontaktlisten</h1>
+
+    <ul th:remove="all-but-first">
+        <li th:each="liste : ${listen}"
+            th:object="${liste.index}">
+            <a href="#"
+               th:href="@{/liste/{id}(id = ${liste.id})}"
+               th:text="|*{vorname} *{nachname} (${liste.kontakte.size()} Kontakt(e), Erstbefund vor *{tage} Tagen) | ">Otto Müller</a>
+        </li>
+        <li><a href="#">Ursula Fuhrmann</a></li>
+        <li><a href="#">Markus Schäfer</a></li>
+        <li><a href="#">Klaudia Wirtz</a></li>
+    </ul>
+
+    <form method="post">
+        <input type="text" name="vorname" placeholder="Vorname">
+        <input type="text" name="nachname" placeholder="Nachname">
+        <button type="submit">Hinzufügen</button>
+    </form>
+
+<p>Zum <a href="/report">Report</a></p>
+
+</div>
+</body>
+</html>

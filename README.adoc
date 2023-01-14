@@ -1,0 +1,77 @@
+= Softwareentwicklung im Team: Praktische Übung 7
+:icons: font
+:icon-set: fa
+:experimental:
+:source-highlighter: rouge
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+:stem: latexmath
+endif::[]
+
+== Vorbereitung
+
+Die Vorbereitungsarbeiten müssen Sie *vor der praktischen Übung* abschließen.
+
+Wir erwarten von Ihnen, dass Sie
+
+* ein Headset o. ä. bereithalten und Ihr technisches Setup überprüfen. Die Korrektor:innen verwenden entweder WebEx oder Big Blue Button über https://senfcall.de/
+* den Aufgabentext unten gelesen und sich dazu schon Gedanken gemacht haben.
+* Wir erwarten von Ihnen, dass Sie verstanden haben, wie Sie Architekturregeln mithilfe von ArchUnit testen können.
+
+== Ziele der Übung
+
+In der Übung sollen Sie das Thema ArchUnit praktisch vertiefen.
+
+== Ablauf der Übung
+
+. Schalten Sie *mindestens* das Mikrofon, aber besser auch die Kamera, ein
+. Am Anfang gibt es eine kurze Vorstellungsrunde
+. In der Gruppe wird kurz diskutiert, wie die Lösung angegangen werden soll, und es werden noch offene Fragen geklärt
+. Es wird festgelegt, in welcher Reihenfolge die Driver-Rolle übernommen wird
+. Die erste Person teilt Ihren Screen und übernimmt mithilfe von `mob` die Session
+. Es wird an der Problemstellung gemeinsam nach den Regeln des Mob-Programmings gearbeitet
+. Nach ca. der Hälfte der Zeit gibt es ein Feedback durch die Tutorin oder den Tutor
+. Es wird weiter an der Problemstellung gearbeitet
+. ca. 10 Minuten vor Ende der Session bekommen Sie Ihre Abschlussbewertung
+
+== Aufgabe
+Wir verwenden eine Anwendung zur Kontaktlistenverwaltung. Solche Werkzeuge werden im Gesundheitswesen zur Nachverfolgung bei ansteckenden Krankheiten, wie beispielsweise Tuberkulose, verwendet.
+
+Die Anwendung verwendet eine H2 Datenbank und Spring Data JDBC. Die Datenbankinhalte werden beim Neustart der Anwendung gelöscht und es werden einige Datensätze automatisch angelegt. Sie können die Details der Persistenz aber ignorieren, da es diese Woche um ArchUnit gehen soll.
+
+WARNING: Die Eigenschaften, die wir hier mit Tests überprüfen, sind nicht unbedingt Eigenschaften, die wir in einem echten System haben wollen. Es geht hier ausschließlich darum zu verstehen, wie ArchUnit Regeln formuliert werden! 
+
+Wenn Sie einen Test geschrieben haben, der vom Code erfüllt wird, *müssen* Sie *immer* demonstrieren, dass der Test auch wirklich fehlschlagen kann, wenn die zum Test gehörende Architekturregel nicht eingehalten wird. Sie können dazu den Code so ändern, dass die Eigenschaft nicht mehr erfüllt ist und zeigen, dass der Regelverletzung durch die Tests entdeckt wird.
+
+IMPORTANT: Die Demonstration, das die Architekturregel auch wirklich getestet wird, ist bei ArchUnit-Test extrem wichtig!
+
+=== Anfragen an die Architektur
+
+* Kein Java Artefakt (z.B. Klasse, Interface, ...) oder Methode ist mit `@Deprecated` annotiert. Nachdem Sie die Regel als Test umgesetzt haben, sorgen Sie dafür, dass die Anwendung die Regel respektiert.
+
+* Controller verwenden niemals direkt ein Repository, sondern Application-Services.
+
+* Es wird ausschließlich Konstruktor-Injection verwendet.
++
+TIP: Vermutlich ist es hier einfacher, die anderen Formen von Injection auszuschließen. 
+
+* Die Architektur ist eine Schichtenarchitektur mit 3 Schichten (keine Onion Architektur!). Verwenden Sie die in ArchUnit eingebaute Methode zum Check einer Schichtarchitektur.
+
+* Für die Dependency Injection werden die Stereotypen `@Controller`, `@Service` und `@Repository` verwendet.
++
+TIP: Vermutlich ist es hier geschickter auszuschließen, dass die vierte mögliche Annotation benutzt wird.
+
+* Erzeugen Sie zwei Annotationen `AggregateRoot` und `Wertobjekt` im Package `stereotypes`, die für ArchUnit-Tests zugreifbar sind und schreiben Sie einen Test, der sicherstellt, dass alle Klassen, die außerhalb des jeweiligen Aggregat-Packages sichtbar sind, mit einer der beiden Annotationen markiert wurden.
+
+* Alle Methoden und Konstruktoren von Klassen sind public, wenn sie nicht mit `@ClassOnly` annotiert sind.
+
+* Erstellen Sie ein Plant-UML Diagramm der Architektur und schreiben Sie einen ArchUnit Test, der prüft, dass der Code das Diagramm korrekt implementiert. Das Plant-UML Plugin für IntelliJ kann hier ganz hilfreich sien, ansonsten können Sie aber auch den Online Server auf der Webseite `https://plantuml.com/` verwenden.
+
+== Verhaltensregeln
+
+Wir erwarten von Ihnen einen respektvollen Umgang miteinander. Es gilt grundsätzlich bei uns der https://berlincodeofconduct.org/de/[Berlin Code of Conduct]. Die Tutor:innen haben die Aufgabe, die Einhaltung der Regeln zu überwachen und können bei Verstößen gegen den Verhaltenskodex Personen aus der praktischen Übung entfernen.
+
