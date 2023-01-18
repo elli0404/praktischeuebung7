@@ -1,7 +1,11 @@
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.codeUnits;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noMembers;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
+import static com.tngtech.archunit.library.plantuml.rules.PlantUmlArchCondition.Configuration.consideringOnlyDependenciesInDiagram;
+import static com.tngtech.archunit.library.plantuml.rules.PlantUmlArchCondition.adhereToPlantUmlDiagram;
+import static com.tngtech.archunit.thirdparty.com.google.common.io.Resources.getResource;
 
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
@@ -9,7 +13,9 @@ import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.library.GeneralCodingRules;
 import contacttracer.ContacttracerApplication;
+import contacttracer.stereotypes.AggregateRoot;
 import contacttracer.stereotypes.ClassOnly;
+import contacttracer.stereotypes.Wertobjekt;
 import org.springframework.stereotype.Component;
 
 @AnalyzeClasses(packagesOf = ContacttracerApplication.class, importOptions = ImportOption.DoNotIncludeTests.class)
@@ -64,23 +70,30 @@ public class ArchUnitTest {
 
 
 
-
+  // TODO: berichtigen
   // Für die Dependency Injection werden die Stereotypen @Controller, @Service und @Repository verwendet.
   // Vermutlich ist es hier geschickter auszuschließen, dass die vierte mögliche Annotation benutzt wird.
   @ArchTest
-  static final ArchRule depInjShouldNotUseComponentAnnotation = noClasses()
+  static final ArchRule dependencyInjShouldNotUseComponentAnnotation =
+      noClasses()
       .should()
       .dependOnClassesThat().areAnnotatedWith(Component.class);
 
 
 
 
-  //TODO: Erzeugen Sie zwei Annotationen AggregateRoot und Wertobjekt im Package stereotypes, die für
+  // Erzeugen Sie zwei Annotationen AggregateRoot und Wertobjekt im Package stereotypes, die für
   // ArchUnit-Tests zugreifbar sind und schreiben Sie einen Test, der sicherstellt, dass alle Klassen,
   // die außerhalb des jeweiligen Aggregat-Packages sichtbar sind,
   // mit einer der beiden Annotationen markiert wurden.
-
-
+  @ArchTest
+  static final ArchRule dumm = classes()
+      .that()
+      .resideOutsideOfPackage("..aggregates.kontaktliste..")
+      .should()
+      .beAnnotatedWith(AggregateRoot.class)
+      .orShould()
+      .beAnnotatedWith(Wertobjekt.class);
 
 
 
@@ -90,8 +103,6 @@ public class ArchUnitTest {
   @ArchTest
   static final ArchRule codeUnitsNotAnnotatedWithClassOnlyShouldBePublic =
       codeUnits().that().areNotAnnotatedWith(ClassOnly.class).should().bePublic();
-//  static final ArchRule codeUnitsNotAnnotatedWithClassOnlyShouldBePublic =
-//      codeUnits().that().areAnnotatedWith(ClassOnly.class).should().notBePublic();
 
 
 
@@ -102,6 +113,13 @@ public class ArchUnitTest {
   //  der prüft, dass der Code das Diagramm korrekt implementiert. Das Plant-UML Plugin für
   //  IntelliJ kann hier ganz hilfreich sien, ansonsten können Sie aber auch den Online Server auf
   //  der Webseite https://plantuml.com/ verwenden.
+
+  @ArchTest
+  static final ArchRule rule7 = classes()
+      .should(adhereToPlantUmlDiagram(getResource("HA2.puml"),
+          consideringOnlyDependenciesInDiagram()));
+
+
 
 
 }

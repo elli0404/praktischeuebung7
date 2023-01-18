@@ -7,6 +7,7 @@ import contacttracer.aggregates.kontaktliste.Index;
 import contacttracer.aggregates.kontaktliste.KontaktListe;
 import contacttracer.aggregates.kontaktliste.Kontaktperson;
 import contacttracer.persistence.KontaktListeRepository;
+import contacttracer.stereotypes.ClassOnly;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -36,6 +37,7 @@ public class KontaktListen {
     return sortedByAge;
   }
 
+  @ClassOnly
   private static int alter(KontaktListe liste) {
     LocalDate erstbefund = liste.getIndex().getErstbefund();
     LocalDate now = LocalDate.now();
