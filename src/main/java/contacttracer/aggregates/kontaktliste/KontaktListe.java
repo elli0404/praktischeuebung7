@@ -35,6 +35,7 @@ public class KontaktListe {
     return index;
   }
 
+
   public Long getId() {
     return id;
   }
